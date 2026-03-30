@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/lib/store';
-import { ExerciseType, EXERCISE_LABELS, DUMMY_ANALYSIS } from '@/types/workout';
+import { ExerciseType, EXERCISE_GROUPS, EXERCISE_LABELS, DUMMY_ANALYSIS } from '@/types/workout';
 import { generateId } from '@/lib/utils';
 
 export default function UploadPage() {
@@ -59,8 +59,12 @@ export default function UploadPage() {
             onChange={(e) => setExerciseType(e.target.value as ExerciseType)}
             className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
           >
-            {(Object.entries(EXERCISE_LABELS) as [ExerciseType, string][]).map(([key, label]) => (
-              <option key={key} value={key}>{label}</option>
+            {EXERCISE_GROUPS.map(({ label, types }) => (
+              <optgroup key={label} label={label}>
+                {types.map((key) => (
+                  <option key={key} value={key}>{EXERCISE_LABELS[key]}</option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </div>
