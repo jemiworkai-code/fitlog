@@ -7,15 +7,12 @@ import { MealType, MEAL_LABELS, MEAL_ICONS, FoodEntry } from '@/types/diet';
 import { searchFood } from '@/lib/foodDatabase';
 import { generateId } from '@/lib/utils';
 
-function todayStr() {
-  return new Date().toISOString().slice(0, 10);
-}
-
 export default function AddDietPage() {
   const router = useRouter();
   const { addDietRecord } = useStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [recordDate, setRecordDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [mealType, setMealType] = useState<MealType>('lunch');
   const [query, setQuery]       = useState('');
   const [results, setResults]   = useState<FoodEntry[]>([]);
@@ -55,7 +52,7 @@ export default function AddDietPage() {
 
     addDietRecord({
       id: generateId(),
-      date: todayStr(),
+      date: recordDate,
       mealType,
       foods: selected,
       photoUrl,
@@ -83,6 +80,18 @@ export default function AddDietPage() {
       <h1 className="text-xl font-bold text-gray-900 mb-5">식단 추가</h1>
 
       <div className="space-y-5">
+        {/* Record Date */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">날짜</label>
+          <input
+            type="date"
+            value={recordDate}
+            max={new Date().toISOString().slice(0, 10)}
+            onChange={(e) => setRecordDate(e.target.value)}
+            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+        </div>
+
         {/* Meal Type */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">식사 타입</label>

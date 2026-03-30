@@ -12,6 +12,7 @@ export default function UploadPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [exerciseType, setExerciseType] = useState<ExerciseType>('squat');
+  const [recordDate, setRecordDate]     = useState(() => new Date().toISOString().slice(0, 10));
   const [memo, setMemo] = useState('');
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
@@ -36,7 +37,7 @@ export default function UploadPage() {
       id: generateId(),
       exerciseType,
       memo,
-      uploadedAt: new Date().toISOString(),
+      uploadedAt: new Date(`${recordDate}T12:00:00`).toISOString(),
       videoUrl,
       videoFileName: videoFile.name,
       analysisResult: DUMMY_ANALYSIS[exerciseType],
@@ -67,6 +68,18 @@ export default function UploadPage() {
               </optgroup>
             ))}
           </select>
+        </div>
+
+        {/* Record Date */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">운동 날짜</label>
+          <input
+            type="date"
+            value={recordDate}
+            max={new Date().toISOString().slice(0, 10)}
+            onChange={(e) => setRecordDate(e.target.value)}
+            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
         </div>
 
         {/* Memo */}
